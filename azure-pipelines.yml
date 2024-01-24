@@ -6,17 +6,6 @@ pool:
 
 steps:
 
-- task: DownloadBuildArtifacts@1
-  inputs:
-    buildType: 'specific'
-    project: 'd422b768-515c-47b0-af2c-539b405734c8'
-    pipeline: '12'
-    specificBuildWithTriggering: true
-    buildVersionToDownload: 'latest'
-    allowPartiallySucceededBuilds: true
-    downloadType: 'single'
-    downloadPath: '$(System.ArtifactsDirectory)'
-
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'KubeSC'
