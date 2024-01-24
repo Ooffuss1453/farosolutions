@@ -1,0 +1,35 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'KubeSC'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      docker build -t faroprodregistry.azurecr.io/web-game:tag 2048-game
+      az acr login -n faroprodregistry
+      docker push faroprodregistry.azurecr.io/web-game:tag
+
+- script: cat 01_kubernetes_aks/app-deploy.yaml
+
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'KubeSC'
+    azureResourceGroup: 'Kube-ProdRg'
+    kubernetesCluster: 'faroprodcluster'
+    namespace: 'default'
+    command: 'apply'
+    useConfigurationFile: true
+    configuration: '01_kubernetes_aks'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
+    azureSubscriptionEndpointForSecrets: 'KubeSC'
+    azureContainerRegistry: 'faroprodregistry.azurecr.io'
+    forceUpdate: true
