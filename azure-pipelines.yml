@@ -6,6 +6,12 @@ pool:
 
 steps:
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'KubeSC'
