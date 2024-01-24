@@ -17,4 +17,15 @@ steps:
       docker push faroprodregistry.azurecr.io/web-game:latest
 
 - script: cat 01_kubernetes_aks/app-deploy.yaml
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(build.artifactstagingdirectory)'
+    Contents: 'azure-aks.yaml'
+    TargetFolder: '$(build.artifactstagingdirectory)'
   
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
