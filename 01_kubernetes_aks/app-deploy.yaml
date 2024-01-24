@@ -34,8 +34,8 @@ spec:
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-      - name: web-game
-        image: faroprodregistry.azurecr.io/web-game:tag
+      - name: web-app-container
+        image: faroprodregistry.azurecr.io/web-game:latest
         ports:
         - containerPort: 80
         resources:
